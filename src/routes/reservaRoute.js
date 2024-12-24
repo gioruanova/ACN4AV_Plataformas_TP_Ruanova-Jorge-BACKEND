@@ -8,5 +8,6 @@ const reservaController = require("../controllers/reservaController");
 router.get("/reservas", reservaController.index);
 router.get("/reserva/:id", reservaController.show);
 router.get("/reservas-usuario/:id", reservaController.showByUser);
+router.post("/crear-reserva", reservaController.store);
 
 module.exports = router;

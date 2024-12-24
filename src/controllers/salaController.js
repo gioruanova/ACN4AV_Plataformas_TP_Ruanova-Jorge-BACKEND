@@ -24,3 +24,11 @@ exports.show = async (req, res) => {
     }
   } catch (error) {}
 };
+
+
+
+// TODO:
+// - HABILITAR O DESHABiLITAR ESPACIO PUNTUAL
+
+
+// HACER O QUITAR PRIVILEGIO ADMIN

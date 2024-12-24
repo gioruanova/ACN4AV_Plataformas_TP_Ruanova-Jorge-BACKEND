@@ -1,5 +1,7 @@
 const connection = require("../../db");
 
+const { formatToday } = require("../helpers/dataHelper");
+
 // TODAS LAS RESERVAS
 exports.all = async () => {
   const query = "SELECT * FROM listadoreservas";
@@ -12,7 +14,7 @@ exports.all = async () => {
   }
 };
 
-// SALA POR RESERVA ID
+// RESERVA POR RESERVA ID
 exports.find = async (id) => {
   const query = "SELECT * FROM listadoreservas WHERE reserva_id = ?";
 
@@ -24,7 +26,7 @@ exports.find = async (id) => {
   }
 };
 
-// SALA POR ID DE USUARIO
+// RESERVA POR ID DE USUARIO
 exports.findByUser = async (id) => {
   const query = "SELECT * FROM listadoReservas WHERE usuario_id = ?";
 
@@ -33,5 +35,34 @@ exports.findByUser = async (id) => {
     return results;
   } catch (error) {
     throw error;
+  }
+};
+
+// -----------------------------------
+// CREAR RESERVA
+// -----------------------------------
+
+exports.create = async ({
+  sala_id,
+  sala_fecha,
+  sala_hora,
+  usuario_id,
+  reserva_estado,
+}) => {
+  const query =
+    "INSERT INTO listadoreservas (sala_id, sala_fecha, sala_hora, usuario_id, reserva_estado) VALUES (?,?,?,?,?)";
+
+  try {
+    await connection.query(query, [
+      sala_id,
+      sala_fecha,
+      sala_hora,
+      usuario_id,
+      reserva_estado,
+    ]);
+  } catch (error) {
+    console.log(query);
+    throw error;
+
   }
 };
