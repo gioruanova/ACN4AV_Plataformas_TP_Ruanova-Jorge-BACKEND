@@ -2,7 +2,13 @@ const connection = require("../../db");
 
 const { formatToday } = require("../helpers/dataHelper");
 
-// TODAS LAS RESERVAS
+
+// =====================================================
+// ACCIONES PARA MOSTRAR
+// =====================================================
+
+
+// MOSTRAR TODAS LAS RESERVAS
 exports.all = async () => {
   const query = "SELECT * FROM listadoreservas";
 
@@ -14,7 +20,7 @@ exports.all = async () => {
   }
 };
 
-// RESERVA POR RESERVA ID
+// MOSTRAR RESERVA POR RESERVA ID
 exports.find = async (id) => {
   const query = "SELECT * FROM listadoreservas WHERE reserva_id = ?";
 
@@ -26,7 +32,7 @@ exports.find = async (id) => {
   }
 };
 
-// RESERVA POR ID DE USUARIO
+// MOSTRAR RESERVA POR ID DE USUARIO
 exports.findByUser = async (id) => {
   const query = "SELECT * FROM listadoReservas WHERE usuario_id = ?";
 
@@ -38,10 +44,32 @@ exports.findByUser = async (id) => {
   }
 };
 
-// -----------------------------------
-// CREAR RESERVA
-// -----------------------------------
 
+// =====================================================
+// ACCIONES PARA CREAR
+// =====================================================
+
+// VALIDADOR DE RESERVA
+exports.exists = async ({ sala_id, sala_fecha, sala_hora }) => {
+  const query = `
+    SELECT COUNT(*) AS count
+    FROM listadoreservas
+    WHERE sala_id = ? AND sala_fecha = ? AND sala_hora = ?
+  `;
+
+  try {
+    const [result] = await connection.query(query, [
+      sala_id,
+      sala_fecha,
+      sala_hora,
+    ]);
+    return result[0].count > 0; // si da true es porque no se puede
+  } catch (error) {
+    throw error;
+  }
+};
+
+// CREAR RESERVA ( CON VALIDACION )
 exports.create = async ({
   sala_id,
   sala_fecha,
@@ -61,8 +89,27 @@ exports.create = async ({
       reserva_estado,
     ]);
   } catch (error) {
-    console.log(query);
     throw error;
+  }
+};
 
+
+// =====================================================
+// ACCIONES MODIFICAR
+// =====================================================
+
+// CANCELAR RESERVA ( UPDATE ESTADO )
+exports.update = async ({ id }) => {
+  const query =
+    "UPDATE listadoreservas SET reserva_estado = 0 WHERE reserva_id = ?";
+
+  try {
+    const [result] = await connection.query(query, [id]);
+    
+    if (result.affectedRows === 0) {
+      throw new Error(`No se pudo actualizar la reserva con ID ${id}.`);
+    }
+  } catch (error) {
+    throw error; 
   }
 };

@@ -49,17 +49,31 @@ exports.showByUser = async (req, res) => {
 };
 
 // TODO:
-// - GENERAR NUEVA RESERVA
 // - CANCELAR RESERVA DESDE ADMIN (PASAR UN ID DE RESERVA)
 // - CANCELAR RESERVA DESDE USER (PASAR UN ID DE RESERVA pero asegurarse que es del user)
 
 // -----------------------------------------
+
 // CREAR RESERVA
 // -----------------------------------------
 exports.store = async (req, res) => {
-  const { sala_id, sala_fecha, sala_hora, usuario_id, reserva_estado } = req.body;
+  const { sala_id, sala_fecha, sala_hora, usuario_id, reserva_estado } =
+    req.body;
 
   try {
+    const exists = await reservaModel.exists({
+      sala_id,
+      sala_fecha,
+      sala_hora,
+    });
+
+    if (exists) {
+      return res.status(400).json({
+        success: false,
+        message: "Ya existe una reserva para esta sala, fecha y horario",
+      });
+    }
+
     await reservaModel.create({
       sala_id,
       sala_fecha,
@@ -67,11 +81,32 @@ exports.store = async (req, res) => {
       usuario_id,
       reserva_estado,
     });
-    res.json({ success: true, message: "Reserva creada correctamente" });
+
+    res
+      .status(400)
+      .json({ success: true, message: "Reserva creada correctamente" });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ success: false, message: "Error en la creación de la reserva" });
+  }
+};
+
+// CANCELAR RESERVA
+// -----------------------------------------
+exports.update = async (req, res) => {
+  const { id } = req.params;
+  const {reserva_estado} = req.body
+
+  try {
+    await reservaModel.update({reserva_estado, id });
+
+    res.json({ success: true, message: "Reserva cancelada con éxito" });
   } catch (error) {
     console.log(error);
     res
       .status(500)
-      .json({ success: false, message: "Error en la creación de la reserva" });
+      .json({ success: false, message: "Error al cancelar la reserva" });
   }
 };
