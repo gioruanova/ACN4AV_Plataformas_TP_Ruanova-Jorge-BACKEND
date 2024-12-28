@@ -2,7 +2,7 @@ const usuarioModel = require("../models/usuarioModel");
 const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
-  const { dni, password, nombre, apellido, email } = req.body;
+  const { dni, password, nombre, apellido, email, isAdmin } = req.body;
 
   try {
     await usuarioModel.register({
@@ -71,7 +71,6 @@ exports.login = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .json({ success: false, message: "Error al intentar iniciar sesión" });
@@ -145,7 +144,6 @@ exports.quitarAdmin = async (req, res) => {
       message: "Se ha quitado privilegio de admin para el usuario",
     });
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .json({ success: false, message: "Error al gestionar usuario" });
@@ -164,7 +162,6 @@ exports.agregarAdmin = async (req, res) => {
       message: "Se ha agregado privilegio de admin para el usuario",
     });
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .json({ success: false, message: "Error al gestionar usuario" });

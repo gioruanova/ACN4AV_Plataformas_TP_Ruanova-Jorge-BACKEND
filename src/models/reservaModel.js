@@ -49,7 +49,7 @@ exports.exists = async ({ sala_id, sala_fecha, sala_hora }) => {
   const query = `
     SELECT COUNT(*) AS count
     FROM listadoreservas
-    WHERE sala_id = ? AND sala_fecha = ? AND sala_hora = ?
+    WHERE sala_id = ? AND sala_fecha = ? AND sala_hora = ? AND reserva_estado = 1
   `;
 
   try {
@@ -58,7 +58,7 @@ exports.exists = async ({ sala_id, sala_fecha, sala_hora }) => {
       sala_fecha,
       sala_hora,
     ]);
-    return result[0].count > 0; // si da true es porque no se puede
+    return result[0].count > 0; 
   } catch (error) {
     throw error;
   }

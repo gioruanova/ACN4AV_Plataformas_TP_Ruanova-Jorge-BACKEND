@@ -23,7 +23,7 @@ VALUES (?, ?, ?, ?, ?, ?)`;
       nombre,
       apellido,
       email,
-      isAdmin ? 1 : 0,
+      isAdmin,
     ]);
   } catch (error) {
     throw error;

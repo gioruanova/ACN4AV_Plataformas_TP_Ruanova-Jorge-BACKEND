@@ -20,15 +20,26 @@ exports.index = async (req, res) => {
 exports.show = async (req, res) => {
   const { id } = req.params;
 
+  const numericId = parseInt(id, 10);
+
+  if (isNaN(numericId)) {
+    return res.status(400).json({ success: false, message: "ID inválido" });
+  }
+
   try {
-    const result = await salaModel.find(id);
+    const result = await salaModel.find(numericId);
+
     if (result == null) {
-      res.status(404).json({ succsess: false, message: "La sala no existe" });
+      return res.status(404).json({ success: false, message: "La sala no existe" });
     } else {
-      res.json({ succsess: true, result });
+      return res.json({ success: true, result });
     }
-  } catch (error) {}
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Error en el servidor" });
+  }
 };
+
+
 
 // DESHABILITAR SALA
 exports.updateDeshabilitar = async (req, res) => {
@@ -40,7 +51,6 @@ exports.updateDeshabilitar = async (req, res) => {
 
     res.json({ success: true, message: "Sala deshabilitada con éxito" });
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .json({ success: false, message: "Error al deshabilitar la sala" });
@@ -57,7 +67,6 @@ exports.updateHabilitar = async (req, res) => {
 
     res.json({ success: true, message: "Sala habilitada éxito" });
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .json({ success: false, message: "Error al habilitar la sala" });
@@ -77,7 +86,6 @@ exports.updateQuitarDestacado = async (req, res) => {
       message: "Sala quitado el tag de destacado con éxito",
     });
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .json({ success: false, message: "Error al quitar destacado la sala" });
@@ -97,7 +105,6 @@ exports.updateAgregarDestacado = async (req, res) => {
       message: "Sala agregado el tag de destacado con éxito",
     });
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .json({ success: false, message: "Error al destacar la sala" });

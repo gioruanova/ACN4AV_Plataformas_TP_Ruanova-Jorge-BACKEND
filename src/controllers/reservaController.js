@@ -33,15 +33,14 @@ exports.showByUser = async (req, res) => {
   try {
     const results = await reservaModel.findByUser(id);
 
+    res.json({ success: true, results });
+  } catch (error) {
     if (!results || results.length === 0) {
       return res.status(404).json({
         success: false,
         message: "No se encontraron reservas para este usuario",
       });
     }
-
-    res.json({ success: true, results });
-  } catch (error) {
     res
       .status(500)
       .json({ success: false, message: "Error interno del servidor", error });
@@ -78,7 +77,7 @@ exports.store = async (req, res) => {
     });
 
     res
-      .status(400)
+      .status(201)
       .json({ success: true, message: "Reserva creada correctamente" });
   } catch (error) {
     console.error(error);

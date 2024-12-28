@@ -8,7 +8,7 @@ const { requireAuth } = require("../middleware/auth");
 
 //Rutas para las salas
 router.get("/listadosalas", salaController.index);
-router.get("/listadosalas/:id",requireAuth, salaController.show);
+router.get("/sala-id/:id",salaController.show);
 
 router.put("/deshabilitarSala/:id",requireAuth, salaController.updateDeshabilitar);
 router.put("/habilitarSala/:id", requireAuth,salaController.updateHabilitar);

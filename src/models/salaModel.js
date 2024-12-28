@@ -15,7 +15,7 @@ exports.all = async () => {
 
 // MOSTRAR SALA POR ID PUNTUAL
 exports.find = async (id) => {
-  const query = "SELECT * FROM listadosalas WHERE id = ?";
+  const query = "SELECT * FROM listadosalas WHERE sala_id = ?";
 
   try {
     [results] = await connection.query(query, [id]);

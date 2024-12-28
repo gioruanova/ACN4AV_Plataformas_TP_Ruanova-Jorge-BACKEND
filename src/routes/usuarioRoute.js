@@ -14,7 +14,6 @@ router.get("/welcome", requireAuth, usuarioController.welcome);
 router.put("/agregar-admin/:id", requireAuth, usuarioController.agregarAdmin);
 router.put("/quitar-admin/:id", requireAuth, usuarioController.quitarAdmin);
 
-router.get('/refresh-token', usuarioController.refreshToken);
-
+router.get("/refresh-token", usuarioController.refreshToken);
 
 module.exports = router;

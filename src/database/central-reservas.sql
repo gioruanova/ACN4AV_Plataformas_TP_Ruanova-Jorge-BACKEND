@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 26, 2024 at 05:19 PM
+-- Generation Time: Dec 28, 2024 at 07:57 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,12 +42,17 @@ CREATE TABLE `listadoreservas` (
 
 INSERT INTO `listadoreservas` (`reserva_id`, `sala_id`, `sala_fecha`, `sala_hora`, `usuario_id`, `reserva_estado`) VALUES
 (1, 1, '2024-12-25', '08:00', 28, 1),
-(2, 3, '2024-12-26', '09:30', 21, 0),
-(3, 5, '2024-12-27', '10:00', 23, 1),
-(4, 7, '2024-12-28', '14:00', 34, 1),
-(5, 9, '2024-12-29', '16:30', 34, 0),
-(6, 6, '2025/06/06', '14:00', 666, 1),
-(7, 6, '2025-06-06', '14:00', 666, 0);
+(2, 3, '2024-12-26', '09:30', 4, 0),
+(3, 5, '2024-12-27', '10:00', 4, 1),
+(4, 7, '2024-12-28', '14:00', 4, 1),
+(5, 9, '2024-12-29', '16:30', 34, 1),
+(6, 6, '2025-01-01', '08:00', 666, 1),
+(7, 6, '2025-06-06', '14:00', 666, 1),
+(24, 6, '2025-01-01', '08:30', 4, 0),
+(25, 6, '2025-01-01', '08:30', 4, 1),
+(26, 2, '2024-12-30', '12:30', 4, 1),
+(27, 2, '2024-12-31', '12:30', 4, 1),
+(28, 5, '2025-01-06', '11:00', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -70,13 +75,13 @@ CREATE TABLE `listadosalas` (
 --
 
 INSERT INTO `listadosalas` (`sala_id`, `name`, `capacidad`, `apta_proyector`, `image_space`, `destacado`, `habilitado`) VALUES
-(1, 'Box de reuniones chica', 8, 1, 'space_1', 0, 1),
-(2, 'Sala de conferencias grande', 50, 0, 'space_2', 1, 1),
-(3, 'Box individual', 1, 0, 'space_3', 0, 1),
-(4, 'Sala de juntas ejecutiva', 20, 1, 'space_4', 1, 0),
+(1, 'Box de reuniones chica', 8, 1, 'space_1', 1, 1),
+(2, 'Sala de conferencias grande', 50, 0, 'space_2', 0, 1),
+(3, 'Box individual', 1, 0, 'space_3', 0, 0),
+(4, 'Sala de juntas ejecutiva', 20, 1, 'space_4', 0, 0),
 (5, 'Box colaborativo', 12, 1, 'space_5', 0, 1),
 (6, 'Sala multifuncional', 30, 0, 'space_6', 1, 1),
-(7, 'Espacio abierto coworking', 25, 1, 'space_7', 0, 0),
+(7, 'Espacio abierto coworking', 25, 1, 'space_7', 0, 1),
 (8, 'Sala privada', 10, 1, 'space_8', 1, 1),
 (9, 'Auditorio pequeño', 40, 0, 'space_9', 0, 1),
 (10, 'Zona creativa', 15, 1, 'space_10', 1, 1);
@@ -127,7 +132,7 @@ INSERT INTO `rangoshorarios` (`id`, `horario`) VALUES
 --
 
 CREATE TABLE `usuarios` (
-  `id` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
   `dni` varchar(20) NOT NULL,
   `password` varchar(255) NOT NULL,
   `nombre` varchar(50) NOT NULL,
@@ -140,9 +145,11 @@ CREATE TABLE `usuarios` (
 -- Dumping data for table `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `dni`, `password`, `nombre`, `apellido`, `email`, `isAdmin`) VALUES
+INSERT INTO `usuarios` (`id_usuario`, `dni`, `password`, `nombre`, `apellido`, `email`, `isAdmin`) VALUES
 (1, '111', '$2b$10$xSEaa5zL/VKorLYaEK1e7.HekOIl.N/jOodcpOBtFVB8M8Fl44z6O', 'Admin', 'con Poder', 'jorge.ruanova@gmail.com', 1),
-(4, '222', '$2b$10$XHRxOJxsqZzwSKvlb/v8me8r95kwZWUFo8qSGx34UUdXjDpp2kT7e', 'Pepe Usuario', 'sin Poder', 'pepe.usuario@gmail.com', 0);
+(4, '222', '$2b$10$XHRxOJxsqZzwSKvlb/v8me8r95kwZWUFo8qSGx34UUdXjDpp2kT7e', 'Pepe Usuario', 'sin Poder', 'pepe.usuario@gmail.com', 0),
+(6, '789789', '$2b$10$OZ5SU7OtSNtq6Sb7s2M6xeAMVFrHuD.7H8T/m2mwB3sgY7M7xNOrG', 'Fernando', 'Gaitan', 'fernando.gaitan@davinci.edu.ar', 1),
+(8, '456456456', '$2b$10$PmvwsQi9HweawM9MfnOAJOKQpkzU/oyi4TKg.X7SWIvQ6R9xbSh/C', 'Juanito', 'Pipino', 'juanito.pipino@gmail.com', 0);
 
 --
 -- Indexes for dumped tables
@@ -172,7 +179,7 @@ ALTER TABLE `rangoshorarios`
 -- Indexes for table `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`id_usuario`),
   ADD UNIQUE KEY `dni` (`dni`),
   ADD UNIQUE KEY `email` (`email`);
 
@@ -184,7 +191,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT for table `listadoreservas`
 --
 ALTER TABLE `listadoreservas`
-  MODIFY `reserva_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `reserva_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `listadosalas`
@@ -202,7 +209,7 @@ ALTER TABLE `rangoshorarios`
 -- AUTO_INCREMENT for table `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
