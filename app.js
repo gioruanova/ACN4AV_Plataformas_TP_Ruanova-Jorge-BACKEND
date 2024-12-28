@@ -1,11 +1,24 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
-const connection = require("./db");
+
 const app = express();
 const port = 8888;
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+
+const cors = require("cors");
+app.options('*',cors());
+app.use((req,res,next)=>{
+  res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  next();
+})
+
+
 
 app.listen(port, () => {
   console.log("Servidor iniciando en puerto : " + port);
@@ -21,6 +34,7 @@ app.get("/", (req, res) => {
 app.use(require("./src/routes/salaRoute"));
 app.use(require("./src/routes/horarioRoute"));
 app.use(require("./src/routes/reservaRoute"));
+app.use(require("./src/routes/usuarioRoute"));
 // --------------
 
 // default con error

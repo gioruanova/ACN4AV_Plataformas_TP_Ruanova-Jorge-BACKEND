@@ -1,12 +1,8 @@
 const connection = require("../../db");
 
-const { formatToday } = require("../helpers/dataHelper");
-
-
 // =====================================================
 // ACCIONES PARA MOSTRAR
 // =====================================================
-
 
 // MOSTRAR TODAS LAS RESERVAS
 exports.all = async () => {
@@ -43,7 +39,6 @@ exports.findByUser = async (id) => {
     throw error;
   }
 };
-
 
 // =====================================================
 // ACCIONES PARA CREAR
@@ -93,7 +88,6 @@ exports.create = async ({
   }
 };
 
-
 // =====================================================
 // ACCIONES MODIFICAR
 // =====================================================
@@ -105,11 +99,27 @@ exports.update = async ({ id }) => {
 
   try {
     const [result] = await connection.query(query, [id]);
-    
+
     if (result.affectedRows === 0) {
       throw new Error(`No se pudo actualizar la reserva con ID ${id}.`);
     }
   } catch (error) {
-    throw error; 
+    throw error;
+  }
+};
+
+// RACTIVAR RESERVA ( UPDATE ESTADO )
+exports.updateReactivar = async ({ id }) => {
+  const query =
+    "UPDATE listadoreservas SET reserva_estado = 1 WHERE reserva_id = ?";
+
+  try {
+    const [result] = await connection.query(query, [id]);
+
+    if (result.affectedRows === 0) {
+      throw new Error(`No se pudo actualizar la reserva con ID ${id}.`);
+    }
+  } catch (error) {
+    throw error;
   }
 };

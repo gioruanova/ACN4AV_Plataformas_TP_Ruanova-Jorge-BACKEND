@@ -48,12 +48,7 @@ exports.showByUser = async (req, res) => {
   }
 };
 
-// TODO:
-// - CANCELAR RESERVA DESDE ADMIN (PASAR UN ID DE RESERVA)
-// - CANCELAR RESERVA DESDE USER (PASAR UN ID DE RESERVA pero asegurarse que es del user)
-
 // -----------------------------------------
-
 // CREAR RESERVA
 // -----------------------------------------
 exports.store = async (req, res) => {
@@ -97,10 +92,10 @@ exports.store = async (req, res) => {
 // -----------------------------------------
 exports.update = async (req, res) => {
   const { id } = req.params;
-  const {reserva_estado} = req.body
+  const { reserva_estado } = req.body;
 
   try {
-    await reservaModel.update({reserva_estado, id });
+    await reservaModel.update({ reserva_estado, id });
 
     res.json({ success: true, message: "Reserva cancelada con éxito" });
   } catch (error) {
@@ -108,5 +103,23 @@ exports.update = async (req, res) => {
     res
       .status(500)
       .json({ success: false, message: "Error al cancelar la reserva" });
+  }
+};
+
+// CANCELAR RESERVA
+// -----------------------------------------
+exports.updateReactivar = async (req, res) => {
+  const { id } = req.params;
+  const { reserva_estado } = req.body;
+
+  try {
+    await reservaModel.updateReactivar({ reserva_estado, id });
+
+    res.json({ success: true, message: "Reserva reactivada con éxito" });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ success: false, message: "Error al reactivar la reserva" });
   }
 };

@@ -4,12 +4,17 @@ const salaModel = require("../models/salaModel");
 exports.index = async (req, res) => {
   try {
     [results] = await salaModel.all();
-    res.json({ success: true, results: results });
+    const booleanResults = results.map((sala) => ({
+      ...sala,
+      apta_proyector: Boolean(sala.apta_proyector),
+      destacado: Boolean(sala.destacado),
+      habilitado: Boolean(sala.habilitado),
+    }));
+    res.json({ success: true, results: booleanResults });
   } catch (error) {
-    res.status(500).json({ succsess: false, message: "Error en conexion" });
+    res.status(500).json({ success: false, message: "Error en conexión" });
   }
 };
-
 
 // SALA POR ID
 exports.show = async (req, res) => {
@@ -25,14 +30,13 @@ exports.show = async (req, res) => {
   } catch (error) {}
 };
 
-
 // DESHABILITAR SALA
 exports.updateDeshabilitar = async (req, res) => {
   const { id } = req.params;
-  const {habilitado} = req.body
+  const { habilitado } = req.body;
 
   try {
-    await salaModel.updateDeshabilitar({habilitado, id });
+    await salaModel.updateDeshabilitar({ habilitado, id });
 
     res.json({ success: true, message: "Sala deshabilitada con éxito" });
   } catch (error) {
@@ -46,10 +50,10 @@ exports.updateDeshabilitar = async (req, res) => {
 // HABILITAR SALA
 exports.updateHabilitar = async (req, res) => {
   const { id } = req.params;
-  const {habilitado} = req.body
+  const { habilitado } = req.body;
 
   try {
-    await salaModel.updateHabilitar({habilitado, id });
+    await salaModel.updateHabilitar({ habilitado, id });
 
     res.json({ success: true, message: "Sala habilitada éxito" });
   } catch (error) {
@@ -60,18 +64,18 @@ exports.updateHabilitar = async (req, res) => {
   }
 };
 
-
-
-
-// DESHABILITAR SALA
+// QUITAR SALA DESTACADA
 exports.updateQuitarDestacado = async (req, res) => {
   const { id } = req.params;
-  const {destacado} = req.body
+  const { destacado } = req.body;
 
   try {
-    await salaModel.updateQuitarDestacado({destacado, id });
+    await salaModel.updateQuitarDestacado({ destacado, id });
 
-    res.json({ success: true, message: "Sala quitado el tag de destacado con éxito" });
+    res.json({
+      success: true,
+      message: "Sala quitado el tag de destacado con éxito",
+    });
   } catch (error) {
     console.log(error);
     res
@@ -80,15 +84,18 @@ exports.updateQuitarDestacado = async (req, res) => {
   }
 };
 
-// HABILITAR SALA
+// AGREGAR SALA DESTACADA
 exports.updateAgregarDestacado = async (req, res) => {
   const { id } = req.params;
-  const {destacado} = req.body
+  const { destacado } = req.body;
 
   try {
-    await salaModel.updateAgregarDestacado({destacado, id });
+    await salaModel.updateAgregarDestacado({ destacado, id });
 
-    res.json({ success: true, message: "Sala agregado el tag de destacado con éxito" });
+    res.json({
+      success: true,
+      message: "Sala agregado el tag de destacado con éxito",
+    });
   } catch (error) {
     console.log(error);
     res
@@ -96,6 +103,3 @@ exports.updateAgregarDestacado = async (req, res) => {
       .json({ success: false, message: "Error al destacar la sala" });
   }
 };
-
-// TODO:
-// HACER O QUITAR PRIVILEGIO ADMIN
