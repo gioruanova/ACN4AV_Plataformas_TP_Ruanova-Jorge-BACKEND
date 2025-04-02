@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const app = express();
-const port = process.env.PORT || 8080
+const port = process.env.PORT;
 
 if (!port) {
   throw new Error("❌ ERROR: No se encontró la variable PORT en Railway.");
@@ -12,22 +12,18 @@ if (!port) {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-
 const cors = require("cors");
-app.options('*',cors());
-app.use((req,res,next)=>{
+app.options("*", cors());
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:5173");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
   res.header("Access-Control-Allow-Headers", "Content-Type");
   next();
-})
-
-
+});
 
 app.listen(port, "0.0.0.0", () => {
   console.log(`🚀 Servidor corriendo en el puerto: ${port}`);
 });
-
 
 // Raiz
 app.get("/", (req, res) => {
