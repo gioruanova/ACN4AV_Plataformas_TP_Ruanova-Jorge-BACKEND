@@ -20,9 +20,10 @@ app.use((req,res,next)=>{
 
 
 
-app.listen(port, () => {
-  console.log(`Servidor corriendo en el puerto: ${port}`);
+app.listen(port, "0.0.0.0", () => {
+  console.log(`🚀 Servidor corriendo en el puerto: ${port}`);
 });
+
 
 // Raiz
 app.get("/", (req, res) => {
