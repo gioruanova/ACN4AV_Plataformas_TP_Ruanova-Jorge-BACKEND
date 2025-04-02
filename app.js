@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || "8888";
 
 if (!port) {
   throw new Error("❌ ERROR: No se encontró la variable PORT en Railway.");
@@ -19,6 +19,12 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
   res.header("Access-Control-Allow-Headers", "Content-Type");
   next();
+});
+
+app._router.stack.forEach((r) => {
+  if (r.route && r.route.path) {
+    console.log(`Ruta registrada: ${r.route.path}`);
+  }
 });
 
 app.listen(port, "0.0.0.0", () => {
@@ -37,6 +43,8 @@ app.use(require("./src/routes/horarioRoute"));
 app.use(require("./src/routes/reservaRoute"));
 app.use(require("./src/routes/usuarioRoute"));
 // --------------
+
+
 
 // default con error
 app.use("/", (req, res, next) => {
